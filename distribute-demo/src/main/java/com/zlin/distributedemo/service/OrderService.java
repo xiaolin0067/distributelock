@@ -46,6 +46,8 @@ public class OrderService {
     @Autowired
     private TransactionDefinition transactionDefinition;
 
+    private Lock lock = new ReentrantLock();
+
     /**
      * private Object object = new Object();
      * synchronized(this){} = synchronized(obj){} 都是锁住当前对象
@@ -55,7 +57,8 @@ public class OrderService {
     public Integer createOrder() throws Exception {
 
         Product product = null;
-        synchronized (this) {
+        lock.lock();
+        try {
             TransactionStatus transaction = platformTransactionManager.getTransaction(transactionDefinition);
             product = productMapper.selectByPrimaryKey(purchaseProductId);
             if (product == null) {
@@ -73,6 +76,8 @@ public class OrderService {
             product.setUpdateUser("xxx");
             productMapper.updateByPrimaryKeySelective(product);
             platformTransactionManager.commit(transaction);
+        }finally {
+            lock.unlock();
         }
 
         TransactionStatus transaction = platformTransactionManager.getTransaction(transactionDefinition);
