@@ -40,14 +40,23 @@ public class OrderService {
     //购买商品数量
     private int purchaseProductNum = 1;
 
-    @Transactional(rollbackFor = Exception.class)
-    public Integer createOrder() throws Exception {
+    @Autowired
+    private PlatformTransactionManager platformTransactionManager;
+
+    @Autowired
+    private TransactionDefinition transactionDefinition;
+
+//    @Transactional(rollbackFor = Exception.class)
+    public synchronized Integer createOrder() throws Exception {
+        TransactionStatus transaction = platformTransactionManager.getTransaction(transactionDefinition);
         Product product = productMapper.selectByPrimaryKey(purchaseProductId);
         if (product == null) {
+            platformTransactionManager.rollback(transaction);
             throw new RuntimeException("购买商品ID：" + purchaseProductId + "不存在");
         }
         Integer currentCount = product.getCount();
         if (purchaseProductNum > currentCount) {
+            platformTransactionManager.rollback(transaction);
             throw new RuntimeException("商品ID：" + purchaseProductId + "仅剩" + currentCount + "件，无法购买");
         }
         Integer leftCount = currentCount - purchaseProductNum;
@@ -77,6 +86,7 @@ public class OrderService {
         orderItem.setUpdateTime(new Date());
         orderItem.setUpdateUser("xxx");
         orderItemMapper.insertSelective(orderItem);
+        platformTransactionManager.commit(transaction);
         return order.getId();
     }
 
