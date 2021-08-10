@@ -46,25 +46,36 @@ public class OrderService {
     @Autowired
     private TransactionDefinition transactionDefinition;
 
+    /**
+     * private Object object = new Object();
+     * synchronized(this){} = synchronized(obj){} 都是锁住当前对象
+     * synchronized(OrderService.class){}则是锁住整个类，类只有一个，而上面锁住对象可能有多个仍可能造成并发
+     */
 //    @Transactional(rollbackFor = Exception.class)
-    public synchronized Integer createOrder() throws Exception {
-        TransactionStatus transaction = platformTransactionManager.getTransaction(transactionDefinition);
-        Product product = productMapper.selectByPrimaryKey(purchaseProductId);
-        if (product == null) {
-            platformTransactionManager.rollback(transaction);
-            throw new RuntimeException("购买商品ID：" + purchaseProductId + "不存在");
-        }
-        Integer currentCount = product.getCount();
-        if (purchaseProductNum > currentCount) {
-            platformTransactionManager.rollback(transaction);
-            throw new RuntimeException("商品ID：" + purchaseProductId + "仅剩" + currentCount + "件，无法购买");
-        }
-        Integer leftCount = currentCount - purchaseProductNum;
-        product.setCount(leftCount);
-        product.setUpdateTime(new Date());
-        product.setUpdateUser("xxx");
-        productMapper.updateByPrimaryKeySelective(product);
+    public Integer createOrder() throws Exception {
 
+        Product product = null;
+        synchronized (this) {
+            TransactionStatus transaction = platformTransactionManager.getTransaction(transactionDefinition);
+            product = productMapper.selectByPrimaryKey(purchaseProductId);
+            if (product == null) {
+                platformTransactionManager.rollback(transaction);
+                throw new RuntimeException("购买商品ID：" + purchaseProductId + "不存在");
+            }
+            Integer currentCount = product.getCount();
+            if (purchaseProductNum > currentCount) {
+                platformTransactionManager.rollback(transaction);
+                throw new RuntimeException("商品ID：" + purchaseProductId + "仅剩" + currentCount + "件，无法购买");
+            }
+            Integer leftCount = currentCount - purchaseProductNum;
+            product.setCount(leftCount);
+            product.setUpdateTime(new Date());
+            product.setUpdateUser("xxx");
+            productMapper.updateByPrimaryKeySelective(product);
+            platformTransactionManager.commit(transaction);
+        }
+
+        TransactionStatus transaction = platformTransactionManager.getTransaction(transactionDefinition);
         Order order = new Order();
         order.setOrderAmount(product.getPrice().multiply(new BigDecimal(purchaseProductNum)));
         order.setOrderStatus(1);//待处理
