@@ -1,0 +1,13 @@
+# MySQL
+## 查看事务是否自动提交
+select @@autocommit;
+## 关闭事务自动提交
+set @@autocommit = 0;
+
+## select for update
+select * from distribute_lock where business_code = 'demo' for update;
+当一个请求执行了上述查询时，若请求事务未提交，则其他请求再次使用该查询或更新会被阻塞
+其他查询不带for update不会被阻塞
+
+
+

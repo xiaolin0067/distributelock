@@ -50,7 +50,8 @@ public class OrderService {
 
     /**
      * private Object object = new Object();
-     * synchronized(this){} = synchronized(obj){} 都是锁住当前对象
+     * synchronized(this){} 锁住当前对象
+     * synchronized(obj){} 都是锁住传入对象
      * synchronized(OrderService.class){}则是锁住整个类，类只有一个，而上面锁住对象可能有多个仍可能造成并发
      */
 //    @Transactional(rollbackFor = Exception.class)
