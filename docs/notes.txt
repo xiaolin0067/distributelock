@@ -9,5 +9,7 @@ select * from distribute_lock where business_code = 'demo' for update;
 当一个请求执行了上述查询时，若请求事务未提交，则其他请求再次使用该查询或更新会被阻塞
 其他查询不带for update不会被阻塞
 
+IDEA复制启动项
+Edit Configurations -> 选择启动项 -> Copy Configuration -> Environment -> 修改一个新的端口 --server.port=8081
 
 

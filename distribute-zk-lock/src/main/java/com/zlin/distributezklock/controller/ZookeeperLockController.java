@@ -37,6 +37,10 @@ public class ZookeeperLockController {
         return "执行完成";
     }
 
+    /**
+     * Curator是zookeeper的一个客户端
+     * @return
+     */
     @RequestMapping("zookeeperCuratorLock")
     public String zookeeperCuratorLock() {
         log.info("进入了方法");
