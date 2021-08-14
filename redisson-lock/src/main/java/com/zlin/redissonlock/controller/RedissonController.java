@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * https://redisson.org/
  * @author zlin
  * @date 20210814
  */
@@ -18,12 +19,12 @@ import java.util.concurrent.TimeUnit;
 public class RedissonController {
 
     @Autowired
-    private RedissonClient redissonClient;
+    private RedissonClient redisson;
 
     @RequestMapping("redissonLock")
     public String redissonLock() {
         log.info("进入了方法");
-        RLock lock = redissonClient.getLock("order");
+        RLock lock = redisson.getLock("order");
         try {
             lock.lock(30, TimeUnit.SECONDS);
             log.info("进入了锁");
