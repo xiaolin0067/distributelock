@@ -13,3 +13,13 @@ IDEA复制启动项
 Edit Configurations -> 选择启动项 -> Copy Configuration -> Environment -> 修改一个新的端口 --server.port=8081
 
 
+分布式锁实现方案优缺点分析
+方式               优点                 缺点
+数据库        实现简单、易于理解        对数据库压力大
+Redis            易于理解          自己实现、不支持阻塞
+Zookeeper        支持阻塞        需理解Zookeeper、程序复杂
+Curator        提供锁的方法        依赖Zookeeper，强一致
+Redisson     提供锁的方法，可阻塞
+推荐Curator、Redisson实现分布式锁
+
+
