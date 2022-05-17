@@ -18,7 +18,7 @@ public class SchedulerService {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @Scheduled(cron = "0/5 * * * * ?")
+//    @Scheduled(cron = "0/5 * * * * ?")
     public void scheduleTask() {
         try (RedisLock redisLock = new RedisLock(redisTemplate, "scheduleTaskKey", 30)) {
             if (!redisLock.getLock()) {

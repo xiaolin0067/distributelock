@@ -22,4 +22,5 @@ Curator        提供锁的方法        依赖Zookeeper，强一致
 Redisson     提供锁的方法，可阻塞
 推荐Curator、Redisson实现分布式锁
 
-
+mybatis generator官网
+http://mybatis.org/generator/

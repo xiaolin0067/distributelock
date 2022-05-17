@@ -17,6 +17,10 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
+drop database if exists distribute_test;
+create database distribute_test;
+use distribute_test;
+
 -- ----------------------------
 -- Table structure for distribute_lock
 -- ----------------------------
