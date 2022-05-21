@@ -3,7 +3,6 @@ package com.zlin.distributezklock.controller;
 import com.zlin.distributezklock.lock.ZkLock;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.recipes.locks.InterProcessLock;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +21,10 @@ public class ZookeeperLockController {
     @Autowired
     private CuratorFramework curatorFramework;
 
+    /**
+     * https://zookeeper.apache.org
+     * @return
+     */
     @RequestMapping("zookeeperLock")
     public String zookeeperLock() {
         log.info("进入了方法");
@@ -39,6 +42,8 @@ public class ZookeeperLockController {
 
     /**
      * Curator是zookeeper的一个客户端
+     * https://curator.apache.org/
+     * https://curator.apache.org/getting-started.html
      * @return
      */
     @RequestMapping("zookeeperCuratorLock")

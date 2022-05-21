@@ -20,6 +20,7 @@
         <module>distribute-lock</module>
         <module>distribute-zk-lock</module>
         <module>redisson-lock</module>
+        <module>idempotent</module>
     </modules>
 
     <properties>

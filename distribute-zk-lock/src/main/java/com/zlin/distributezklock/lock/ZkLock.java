@@ -9,6 +9,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 这个锁的实现方式是有问题的
+ *   1. 未实现可重入
+ *   2. 中间节点客户端挂掉，节点被删除
  * @author zlin
  * @date 20210814
  */
