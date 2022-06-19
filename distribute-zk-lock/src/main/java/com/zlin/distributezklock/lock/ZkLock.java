@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 这个锁的实现方式是有问题的
  *   1. 未实现可重入
- *   2. 中间节点客户端挂掉，节点被删除
+ *   2. 中间节点客户端挂掉，节点被删除，导致羊群效应
  * @author zlin
  * @date 20210814
  */
@@ -23,7 +23,7 @@ public class ZkLock implements AutoCloseable, Watcher {
     private String zNode;
 
     public ZkLock() throws IOException {
-        this.zooKeeper = new ZooKeeper("192.168.3.26:2181", 100000, this);
+        this.zooKeeper = new ZooKeeper("10.30.25.77:12181", 100000, this);
     }
 
     public boolean getLock(String businessCode) {
@@ -66,6 +66,7 @@ public class ZkLock implements AutoCloseable, Watcher {
             synchronized (this) {
                 wait();
             }
+            // 判断当前是否是最小的节点
             return true;
         } catch (Exception e) {
             e.printStackTrace();

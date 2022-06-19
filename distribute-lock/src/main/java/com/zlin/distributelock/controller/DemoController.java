@@ -40,6 +40,7 @@ public class DemoController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        log.info("执行完成！");
         return "执行完成！";
     }
 

@@ -192,7 +192,7 @@
   <select id="selectForUpdateByCode" resultType="com.zlin.distributelock.model.DistributeLock"
           parameterType="java.lang.String">
     select id, business_code, business_name from distribute_lock
-    where business_code = #{record.businessCode,jdbcType=VARCHAR} for update
+    where business_code = #{businessCode,jdbcType=VARCHAR} for update
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     <!--

@@ -15,7 +15,7 @@ import java.util.UUID;
  */
 @Slf4j
 @RestController
-public class RedissonBloomController {
+public class RedissonBloomFilterController {
 
     @Autowired
     private RedissonClient redisson;

@@ -17,7 +17,7 @@ public class Beans {
     @Bean(initMethod = "start", destroyMethod = "close")
     public CuratorFramework getCuratorFramework() {
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000,3);
-        return CuratorFrameworkFactory.newClient("192.168.3.26:2181", retryPolicy);
+        return CuratorFrameworkFactory.newClient("10.103.0.44:12181", retryPolicy);
     }
 
 }

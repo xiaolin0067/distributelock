@@ -2,7 +2,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.3.26:3306/distribute?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/distribute?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
     username: root
     password: 123456
     hikari:
@@ -16,8 +16,8 @@ spring:
       connection-test-query: SELECT 1
   redis:
     database: 0
-    host: 192.168.3.26
-    port: 6379
+    host: 10.30.25.77
+    port: 16379
     password: 123456
 
 mybatis:
