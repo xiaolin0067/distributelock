@@ -1,3 +1,5 @@
+本文博客见: [GitHub](https://blog.csdn.net/qq_36724501/article/details/125209393)
+
 # 1. 分布式锁的常见实现方式
 ## 1.1 为什么要用
   在单体架构中，多个线程都是属于同一个进程的，所以在线程并发执行遇到资源竞争时，可以利用ReentrantLock、synchronized等技术来作为锁，来控制共享资源的使用。
@@ -175,7 +177,7 @@ update set version = version + 1, xxx=${xxx} where id = xxx and version = ${vers
 实现过程非常的简单：
 ①客户端进入操作页面时，从后台获取Token并暂存。
 ②提交操作时，将Token一同传入后台。
-③后台使用Token获取分布式锁，获得锁则继续执行，否则拒绝请求。
+③后台使用Token获取分布式锁，获得锁则继续执行，否则执行返回上次应该返回的结果，并在返回的提示中提示重复提交。
 可使用注解，和拦截器进行封装，在接口上添加一个注解即可实现幂等性。
 
 关键代码如下：
@@ -206,7 +208,7 @@ public class ApiIdempotentInterceptor implements HandlerInterceptor {
 
         ApiIdempotent methodAnnotation=method.getAnnotation(ApiIdempotent.class);
         if (methodAnnotation != null) {
-            // 校验通过放行，校验不通过全局异常捕获后输出返回结果
+            // 校验通过放行，不通过抛出异常进行返回幂等结果
             tokenController.checkIdempotentToken(request);
         }
         return true;
@@ -255,8 +257,9 @@ public class TokenController {
         try {
             String orderTokenKey = getTokenCacheKey(sessionId);
             String cacheToken = redisTemplate.opsForValue().get(orderTokenKey);
+            // TODO：注意，根据业务定义，这里直接抛出异常后应该进行拦截，并返回这个唯一业务ID上一次返回的结果
             if (StringUtils.isBlank(cacheToken) || !cacheToken.equals(token)) {
-                throw new RuntimeException("token不存在");
+                throw new RuntimeException("重复提交");
             }
             redisTemplate.delete(orderTokenKey);
         } finally {
