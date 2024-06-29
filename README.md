@@ -1,4 +1,4 @@
-本文博客见: [GitHub](https://blog.csdn.net/qq_36724501/article/details/125209393)
+[博客](https://blog.csdn.net/qq_36724501/article/details/125209393)
 
 # 1. 分布式锁的常见实现方式
 ## 1.1 为什么要用
